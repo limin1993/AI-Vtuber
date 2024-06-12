@@ -79,7 +79,10 @@ class MY_TTS:
                     async with session.get(file_url, params=data, timeout=timeout) as response:
                         if response.status == 200:
                             content = await response.read()
-                            file_name = type + '_' + self.common.get_bj_time(4) + '.wav'
+                            postfix = '.wav'
+                            if type == "xy_tts":
+                                postfix = '.mp3'
+                            file_name = type + '_' + self.common.get_bj_time(4) + postfix
                             voice_tmp_path = self.common.get_new_audio_path(self.audio_out_path, file_name)
                             with open(voice_tmp_path, 'wb') as file:
                                 file.write(content)
