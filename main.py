@@ -1957,8 +1957,8 @@ def start_server():
             global global_idle_time
 
             async for message in websocket:
-                # print(f"收到消息: {message}")
-                # await websocket.send("服务器收到了你的消息: " + message)
+                print(f"收到消息: {message}")
+                await websocket.send("服务器收到了你的消息: " + message)
 
                 try:
                     data_json = json.loads(message)
