@@ -2078,6 +2078,10 @@ def goto_func_page():
                     config_data["edge-tts"]["rate"] = input_edge_tts_rate.value
                     config_data["edge-tts"]["volume"] = input_edge_tts_volume.value
 
+                if config.get("webui", "show_card", "tts", "xy_tts"):
+                    config_data["xy_tts"]["api_ip_port"] = input_xy_tts_api_ip_port.value
+                    config_data["xy_tts"]["npc_id"] = input_xy_tts_npc_id.value
+
                 if config.get("webui", "show_card", "tts", "vits"):
                     config_data["vits"]["type"] = select_vits_type.value
                     config_data["vits"]["config_path"] = input_vits_config_path.value
@@ -2616,6 +2620,7 @@ def goto_func_page():
                 config_data["webui"]["show_card"]["tts"]["azure_tts"] = switch_webui_show_card_tts_azure_tts.value
                 config_data["webui"]["show_card"]["tts"]["fish_speech"] = switch_webui_show_card_tts_fish_speech.value
                 config_data["webui"]["show_card"]["tts"]["tts_chattts"] = switch_webui_show_card_tts_chattts.value
+                config_data["webui"]["show_card"]["tts"]["xy_tts"] = switch_webui_show_card_tts_xy_tts.value
 
                 config_data["webui"]["show_card"]["svc"]["ddsp_svc"] = switch_webui_show_card_svc_ddsp_svc.value
                 config_data["webui"]["show_card"]["svc"]["so_vits_svc"] = switch_webui_show_card_svc_so_vits_svc.value                
@@ -2723,6 +2728,7 @@ def goto_func_page():
         'azure_tts': 'azure_tts',
         'fish_speech': 'fish_speech',
         'chattts': 'ChatTTS',
+        'xy_tts': 'xy_tts'
     }
 
     # 聊天类型所有配置项
@@ -4374,7 +4380,22 @@ def goto_func_page():
                         input_edge_tts_rate = ui.input(label='语速增益', placeholder='语速增益 默认是 +0%，可以增减，注意 + - %符合别搞没了，不然会影响语音合成', value=config.get("edge-tts", "rate")).style("width:200px;")
 
                         input_edge_tts_volume = ui.input(label='音量增益', placeholder='音量增益 默认是 +0%，可以增减，注意 + - %符合别搞没了，不然会影响语音合成', value=config.get("edge-tts", "volume")).style("width:200px;")
-            
+
+            if config.get("webui", "show_card", "tts", "xy_tts"):
+                with ui.card().style(card_css):
+                    ui.label("XY-TTS")
+                    with ui.row():
+                        input_xy_tts_api_ip_port = ui.input(
+                            label='API地址',
+                            placeholder='xy服务地址',
+                            value=config.get("xy_tts", "api_ip_port"),
+                            validation={
+                                '请输入正确格式的URL': lambda value: common.is_url_check(value),
+                            }
+                        ).style("width:300px;")
+
+                        input_xy_tts_npc_id = ui.input(label='NPC_ID', placeholder='XY的NPC ID', value=config.get("xy_tts", "npc_id")).style("width:200px;")
+
             if config.get("webui", "show_card", "tts", "vits"):
                 with ui.card().style(card_css):
                     ui.label("VITS-Simple-API")
@@ -5935,6 +5956,7 @@ def goto_func_page():
                         switch_webui_show_card_tts_azure_tts = ui.switch('azure_tts', value=config.get("webui", "show_card", "tts", "azure_tts")).style(switch_internal_css)
                         switch_webui_show_card_tts_fish_speech = ui.switch('fish_speech', value=config.get("webui", "show_card", "tts", "fish_speech")).style(switch_internal_css)
                         switch_webui_show_card_tts_chattts = ui.switch('ChatTTS', value=config.get("webui", "show_card", "tts", "chattts")).style(switch_internal_css)
+                        switch_webui_show_card_tts_xy_tts = ui.switch('xy_tts', value=config.get("webui", "show_card", "tts", "xy_tts")).style(switch_internal_css)
                         
                 with ui.card().style(card_css):
                     ui.label("变声")

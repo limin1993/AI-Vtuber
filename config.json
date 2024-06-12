@@ -640,6 +640,10 @@
     "rate": "+0%",
     "volume": "+0%"
   },
+  "xy_tts": {
+    "api_ip_port": "https://xingye-test.xaminim.com/weaver/api/v1/live/tts",
+    "npc_id": "123"
+  },
   "elevenlabs": {
     "api_key": "",
     "voice": "Rachel",
@@ -1767,7 +1771,8 @@
         "clone_voice": true,
         "azure_tts": true,
         "fish_speech": true,
-        "chattts": true
+        "chattts": true,
+        "xy_tts": true
       },
       "svc": {
         "ddsp_svc": true,

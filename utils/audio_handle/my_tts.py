@@ -272,6 +272,37 @@ class MY_TTS:
             logging.error(f'bert_vits2未知错误，请检查您的bert_vits2 api是否启动/配置是否正确，报错内容: {e}')
         
         return None
+
+    # 请求xy的api
+    async def xy_tts_api(self, data):
+        try:
+            logging.debug(f"data={data}")
+            api_url = urljoin(data["api_ip_port"], '/weaver/api/v1/live/tts')
+
+            data_json = {
+                "text": data["content"],
+                "npc_id": data["npc_id"],
+            }
+
+            logging.debug(f"data_json={data_json}")
+
+            async with aiohttp.ClientSession() as session:
+                async with session.post(api_url, json=data_json, timeout=self.timeout) as response:
+                    response = await response.json()
+                    print(response)
+                    voice_url = response["voice_url"]
+            if voice_url == "":
+                logging.error(f"voice_url is empty")
+                return None
+            return await self.download_audio("xy_tts", voice_url, self.timeout)
+        except aiohttp.ClientError as e:
+            logging.error(traceback.format_exc())
+            logging.error(f'xy_tts请求失败，请检查您的xy_tts api是否启动/配置是否正确，报错内容: {e}')
+        except Exception as e:
+            logging.error(traceback.format_exc())
+            logging.error(f'xy_tts未知错误，请检查您的xy_tts api是否启动/配置是否正确，报错内容: {e}')
+
+        return None
     
     # 请求VITS fast接口获取合成后的音频路径
     def vits_fast_api(self, data):

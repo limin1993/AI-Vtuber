@@ -831,6 +831,15 @@ class Audio:
 
                 # 调用接口合成语音
                 voice_tmp_path = await self.my_tts.bert_vits2_api(data)
+
+            elif message["tts_type"] == "xy_tts":
+                data = {
+                    "api_ip_port": message["data"]["api_ip_port"],
+                    "content": message["content"],
+                    "npc_id": message["data"]["npc_id"],
+                }
+
+                voice_tmp_path = await self.my_tts.xy_tts_api(data)
             elif message["tts_type"] == "vits_fast":
                 if message["data"]["language"] == "自动识别":
                     # 自动检测语言
